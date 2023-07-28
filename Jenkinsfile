@@ -1,49 +1,39 @@
 pipeline {
-  agent any
-  environment {
-    dockerimagename = "salman1091/react-app"
-    dockerImage = ""
-  }
+    agent any
 
-  
-
-  stages {
-
-    stage('Checkout Source') {
-      steps {
-        git 'https://github.com/salman0909/jenkins-docker-kubernetes-deployment.git'
-      }
+    environment {
+        dockerhubCredentials = 'dockerhub-credentials'
+        dockerImageTag = "salman1091/react-app:${BUILD_TAG.toLowerCase()}"
     }
 
-    stage('Build image') {
-      steps{
-        script {
-          dockerImage = docker.build dockerimagename
+    stages {
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    sh "docker build -t $dockerImageTag ."
+                }
+            }
         }
-      }
-    }
 
-    stage('Pushing Image') {
-      environment {
-               registryCredential = 'dockerhub-credentials'
-           }
-      steps{
-        script {
-          docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
-            dockerImage.push("latest")
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry('', dockerhubCredentials) {
+                        sh "docker push $dockerImageTag"
+                    }
+                }
+            }
+        }
+        stage('Deploying React.js container to Kubernetes') {
+          steps {
+            script {
+              kubernetesDeploy(configs: "image-deployment.yaml", "image-service.yaml")
+            }
           }
         }
-      }
+        
     }
-
-    stage('Deploying React.js container to Kubernetes') {
-      steps {
-        script {
-          kubernetesDeploy(configs: "image-deployment.yaml", "image-service.yaml")
-        }
-      }
-    }
-
-  }
-
 }
+
+
+   
