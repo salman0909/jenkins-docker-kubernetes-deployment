@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         dockerhubCredentials = 'dockerhub-credentials'
-        dockerImageTag = "salman1091/react-app:${BUILD_TAG.toLowerCase()}"
+        dockerImageTag = "salman1091/nginx-example-01:${BUILD_TAG.toLowerCase()}"
     }
 
     stages {
@@ -24,7 +24,7 @@ pipeline {
                 }
             }
         }
-        stage('Deploying React.js container to Kubernetes') {
+        stage('Deploying Container to Kubernetes') {
           steps {
             script {
               kubernetesDeploy(configs: "image-deployment.yaml", "image-service.yaml")
