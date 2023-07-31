@@ -32,7 +32,7 @@ pipeline {
                               contextName: 'main.production', 
                               credentialsId: 'k8s-credentials', namespace: '', 
                               restrictKubeConfigAccess: true, 
-                              serverUrl: '192.168.100.11'
+                              serverUrl: '192.168.100.11:8080'
                             ]) {
               sh 'kubectl apply -f jenkins-docker-kubernetes-deployment/image-deployment.yaml'
             }
