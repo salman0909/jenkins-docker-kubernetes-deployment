@@ -26,13 +26,6 @@ pipeline {
         }
         stage('Deploying Container to Kubernetes') {
           steps {
-              withKubeConfig([
-                              clusterName: 'main.production', 
-                              contextName: 'main.production', 
-                              credentialsId: 'k8s-credentials',
-                              namespace: '', 
-                              restrictKubeConfigAccess: true, 
-                            ]) {
               sh 'kubectl apply -f jenkins-docker-kubernetes-deployment/image-deployment.yaml'
             }
         }
