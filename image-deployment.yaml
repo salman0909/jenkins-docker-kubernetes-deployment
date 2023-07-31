@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: nginx-container
-          image: salman1091/nginx-example:latest
+          image: salman1091/nginx-example-01:latest
           ports:
-            - containerPort: 80
+          - containerPort: 80
 
