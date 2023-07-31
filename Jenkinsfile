@@ -26,7 +26,7 @@ pipeline {
         }
         stage('Deploying Container to Kubernetes') {
           steps {
-              sh 'kubectl apply -f jenkins-docker-kubernetes-deployment/image-deployment.yaml'
+              sh 'kubectl apply -f deployment.apps/nginx-deployment/image-deployment.yaml'
             }
         }
         
